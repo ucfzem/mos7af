@@ -18,12 +18,17 @@
 ## Features
 
 - 📖 **Quran Reader** — Load any of the 114 surahs with Uthmani script verse text
-- 📘 **Instant Tafsir** — Per-verse tafsir via jsDelivr CDN (spa5k/tafsir_api), supporting Muyassar, Ibn Kathir, Saddi, and Tabari
+- 📘 **Instant Tafsir** — Per-ayah tafsir via jsDelivr CDN (spa5k/tafsir_api), supporting Muyassar, Ibn Kathir, Saddi, and Tabari
 - 📜 **Al-Muhkamat** — Section explaining Quranic unambiguous vs. ambiguous verses
 - 📚 **Manhaj as-Salaf** — Classical methodology for Quranic interpretation
 - 🌟 **I'jaz & Maqasid** — Quranic miracles and the five objectives of Sharia
 - 🔄 **Surah Persistence** — Current surah saved to localStorage + URL hash, persists on refresh
-- 📱 **Mobile-friendly** — Responsive design for mobile and desktop
+- 🌗 **Dark Mode** — Toggle between light and dark themes
+- 📊 **Progress Bar** — Tracks current position within a surah on scroll
+- 📤 **Share** — Share ayahs via Web Share API or clipboard
+- 🔖 **Bookmarks** — Save and manage favorite ayahs
+- 🔍 **Search** — Filter surahs in the dropdown
+- 📱 **Mobile-Optimized** — 44px touch targets, smooth animations, responsive
 
 ---
 
@@ -51,20 +56,18 @@
 - GitHub Pages: https://ucfzem.github.io/mos7af/
 - Vercel: https://mos7af.vercel.app/
 - GitHub Repo: https://github.com/ucfzem/mos7af
+- This conversation: https://github.com/ucfzem/mos7af/blob/main/CONVERSATION.md
 
 ### APIs & Services Used
 - alquran.cloud (verse text): https://api.alquran.cloud/v1/surah
-- alquran.cloud (uthmani script): https://api.alquran.cloud/v1/surah/{number}/quran-uthmani
-- jsDelivr (verse fallback): https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-quranuthmanihaf/{surah}.json
+- alquran.cloud (uthmani script): https://api.alquran.cloud/v1/surah/{n}/quran-uthmani
+- jsDelivr (verse fallback): https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-quranuthmanihaf/{n}.json
 - jsDelivr (tafsir Muyassar): https://cdn.jsdelivr.net/gh/spa5k/tafsir_api@main/tafsir/ar-tafsir-muyassar/{surah}/{ayah}.json
 - jsDelivr (tafsir Ibn Kathir): https://cdn.jsdelivr.net/gh/spa5k/tafsir_api@main/tafsir/ar-tafsir-ibn-kathir/{surah}/{ayah}.json
 - jsDelivr (tafsir Saddi): https://cdn.jsdelivr.net/gh/spa5k/tafsir_api@main/tafsir/ar-tafseer-al-saddi/{surah}/{ayah}.json
-- jsDelivr (tafsir Tabari): https://cdn.jsdelivr.net/gh/spa5k/tafsir_api@main/tafsir/ar-tafsir-al-tabari/{surah}/{ayah}.json
 
-### Models
-- Ling 3.0 Flash Free (124B MoE, 256K context): https://openrouter.ai/inclusionai/ling-3.0-flash:free
-- Kilo Code (IDE with Ling 3.0 Flash): https://kilo.ai
-- Vercel AI Gateway (Ling 3.0 Flash): https://vercel.com/changelog/ling-3-0-flash-is-now-available-on-ai-gateway
+### Inspiration Reference
+- Quran for Android: https://github.com/quran/quran_android
 
 ### Fonts
 - Amiri Quran (Google Fonts): https://fonts.google.com/specimen/Amiri+Quran
@@ -82,16 +85,17 @@ git add -A && git commit -m "message" && git push
 
 ---
 
-## Session History
+## Inspiration from quran_android (https://github.com/quran/quran_android)
 
-| Step | What |
-|------|------|
-| 0 | OpenCode session interrupted by sleep/DeepSeek shutdown |
-| 1 | Initial HTML file created with tabs: reader, muhkamat, manhaj, ijaz |
-| 2 | Deployed to GitHub Pages and Vercel |
-| 3 | Fixed tafsir API — alquran.cloud tafsir endpoints return 500; switched to quran.com API |
-| 4 | Fixed again — quran.com/qurancdn.com use Cloudflare, blocked by some mobile browsers |
-| 5 | Deployed with local tafsir.json for same-origin fetching |
-| 6 | Implemented surah persistence via localStorage + URL hash |
-| 7 | Final rewrite: hardcoded surah names, jsDelivr CDN for both verses and tafsir |
-| 8 | Deployed final version — confirmed working on both GitHub Pages and Vercel |
+Transferable patterns identified for future mos7af enhancements:
+
+1. **Page-based navigation** — navigate by page number (604 pages) alongside surah/ayah
+2. **Advanced reading progress** — session tracking, last-read tracking
+3. **Bookmark metadata** — tags, notes, colors for bookmarks
+4. **Audio/Recitation** — built-in audio player with multiple reciters
+5. **Full-text search** — keyword search across verses and translations
+6. **Offline caching** — Service Worker for offline access
+7. **Translation overlay** — toggleable translations (English, French, etc.)
+8. **Reading preferences** — font size slider, line spacing, advanced theme options
+9. **ViewModel/StateFlow architecture** — structured state management pattern
+10. **Dark mode** — already implemented, could be expanded with more theme options
