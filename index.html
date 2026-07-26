@@ -216,25 +216,19 @@
 
         // إذا لم يكن موجوداً في المخصص، نجلبه من API التفسير
         if (!tafsirText) {
-            try {
-                // نستخدم تفسير "الميسر" لأنه مختصر وواضح
-                const response = await fetch(`https://api.alquran.cloud/v1/ayah/${key}/tafsir/ar.al-muyassar`);
-                const data = await response.json();
-                
-                if (data.code === 200 && data.data && data.data.tafsir) {
-                    tafsirText = data.data.tafsir;
-                } else {
-                    // لو فشل الميسر، نجرب الجلالين
-                    const response2 = await fetch(`https://api.alquran.cloud/v1/ayah/${key}/tafsir/ar.al-jalalayn`);
-                    const data2 = await response2.json();
-                    if (data2.code === 200 && data2.data && data2.data.tafsir) {
-                        tafsirText = data2.data.tafsir;
-                    } else {
-                        tafsirText = '⚠️ لم نتمكن من جلب التفسير لهذه الآية. حاول مرة أخرى لاحقاً.';
+            const tafsirIds = [16, 91, 14]; // الميسر، السعدي، ابن كثير
+            for (const id of tafsirIds) {
+                try {
+                    const res = await fetch(`https://api.quran.com/api/v4/tafsirs/${id}/by_ayah/${key}`);
+                    const d = await res.json();
+                    if (d.tafsir && d.tafsir.text) {
+                        tafsirText = d.tafsir.text;
+                        break;
                     }
-                }
-            } catch (error) {
-                tafsirText = '⚠️ حدث خطأ في الاتصال. تأكد من اتصالك بالإنترنت.';
+                } catch (_) {}
+            }
+            if (!tafsirText) {
+                tafsirText = '⚠️ لم نتمكن من جلب التفسير لهذه الآية. حاول مرة أخرى لاحقاً.';
             }
         }
 
