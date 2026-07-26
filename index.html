@@ -155,16 +155,23 @@
                 option.textContent = `${surah.number}. ${surah.name}`;
                 select.appendChild(option);
             });
-            loadSurah();
+        // Check hash first, then localStorage, then default to Fatiha
+            const hashSurah = window.location.hash.replace('#', '');
+            const savedSurah = localStorage.getItem('mos7af_surah');
+            loadSurah(hashSurah || savedSurah || null);
         } catch (error) {
             document.getElementById('ayahsContainer').innerHTML = '⚠️ خطأ في تحميل قائمة السور.';
         }
     }
 
 
-    async function loadSurah() {
-        const surahNumber = document.getElementById('surahSelect').value;
+    async function loadSurah(customSurah) {
+        const select = document.getElementById('surahSelect');
+        const surahNumber = customSurah || select.value;
         if (!surahNumber) return;
+        select.value = surahNumber;
+        localStorage.setItem('mos7af_surah', surahNumber);
+        window.location.hash = surahNumber;
         const container = document.getElementById('ayahsContainer');
         container.innerHTML = '⏳ جاري تحميل الآيات...';
         try {
