@@ -124,7 +124,7 @@
     // 1. التفاسير المخصصة (للمحكمات وآيات الإعجاز الأساسية)
     //    هذه ستظهر بدلاً من التفسير العام الذي يجلبه الـ API
     // ============================================================
-    const tafsirData = {
+    let cachedTafsir = {};
         "1:1": "تفسير 'بسم الله...': ابتداء باسم الله الجامع لصفات الكمال. وهو قطعي الدلالة على أن جميع الأعمال تبدأ باسمه.",
         "1:2": "تفسير 'الحمد لله رب العالمين': الحمد هو الثناء على الله بصفات الكمال، والرب هو المالك المدبر الخالق.",
         "1:3": "تفسير 'الرحمن الرحيم': صفتان دالتان على عميم رحمته في الدنيا والآخرة.",
@@ -217,9 +217,17 @@
         tafsirDiv.innerHTML = '⏳ جاري جلب التفسير من المصادر الموثوقة...';
 
 
-        const key = `${surah}:${ayah}`;
-        let tafsirText = tafsirData[key]; // نبحث في التفسير المخصص أولاً
+const key = `${surah}:${ayah}`;
+        let tafsirText = tafsirData[key] || cachedTafsir[key];
 
+        if (!tafsirText) {
+            try {
+                const res = await fetch('tafsir.json');
+                const all = await res.json();
+                cachedTafsir = all;
+                tafsirText = all[key];
+            } catch (_) {}
+        }
 
         if (!tafsirText) {
             const sources = [
@@ -232,10 +240,14 @@
                 try {
                     const res = await src();
                     const d = await res.json();
-                    if (d?.tafsir?.text) {
-                        tafsirText = d.tafsir.text;
-                        break;
-                    }
+                    if (d?.tafsir?.text) { tafsirText = d.tafsir.text; break; }
+                } catch (_) {}
+            }
+        }
+
+        if (!tafsirText) {
+            tafsirText = '⚠️ لم نتمكن من جلب التفسير لهذه الآية. حاول مرة أخرى لاحقاً.';
+        }
                 } catch (_) {}
             }
             if (!tafsirText) tafsirText = '⚠️ لم نتمكن من جلب التفسير لهذه الآية. حاول مرة أخرى لاحقاً.';
