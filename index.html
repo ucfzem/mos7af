@@ -214,22 +214,24 @@
         let tafsirText = tafsirData[key]; // نبحث في التفسير المخصص أولاً
 
 
-        // إذا لم يكن موجوداً في المخصص، نجلبه من API التفسير
         if (!tafsirText) {
-            const tafsirIds = [16, 91, 14]; // الميسر، السعدي، ابن كثير
-            for (const id of tafsirIds) {
+            const sources = [
+                () => fetch(`https://api.qurancdn.com/api/qdc/tafsirs/16/by_ayah/${key}`),
+                () => fetch(`https://api.qurancdn.com/api/qdc/tafsirs/91/by_ayah/${key}`),
+                () => fetch(`https://api.qurancdn.com/api/qdc/tafsirs/14/by_ayah/${key}`),
+                () => fetch(`https://api.quran.com/api/v4/tafsirs/16/by_ayah/${key}`),
+            ];
+            for (const src of sources) {
                 try {
-                    const res = await fetch(`https://api.quran.com/api/v4/tafsirs/${id}/by_ayah/${key}`);
+                    const res = await src();
                     const d = await res.json();
-                    if (d.tafsir && d.tafsir.text) {
+                    if (d?.tafsir?.text) {
                         tafsirText = d.tafsir.text;
                         break;
                     }
                 } catch (_) {}
             }
-            if (!tafsirText) {
-                tafsirText = '⚠️ لم نتمكن من جلب التفسير لهذه الآية. حاول مرة أخرى لاحقاً.';
-            }
+            if (!tafsirText) tafsirText = '⚠️ لم نتمكن من جلب التفسير لهذه الآية. حاول مرة أخرى لاحقاً.';
         }
 
 
