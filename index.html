@@ -1,250 +1,265 @@
-<!DOCTYPE html><html lang="ar"><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المصحف الميسّر - تفسير فوري لكل آية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap" rel="stylesheet">
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Amiri Quran','Traditional Arabic',serif;background:#f8f4ec;color:#1f140a;padding:15px;direction:rtl}
-        .container{max-width:1000px;margin:auto;background:#ffffff;padding:30px;border-radius:25px;box-shadow:0 10px 35px rgba(0,0,0,0.08);border:1px solid #dccdb5}
-        h1{text-align:center;color:#3b2819;border-bottom:3px solid #b99a6b;padding-bottom:20px;font-size:34px;font-weight:normal}
-        .subhead{text-align:center;color:#6b5a4a;font-size:18px;margin-top:-10px;margin-bottom:20px;border-bottom:1px dashed #dccdb5;padding-bottom:10px}
-        .tabs{display:flex;justify-content:center;gap:8px;margin:25px 0;flex-wrap:wrap}
-        .tab-btn{padding:12px 30px;border:none;background:#efe6d6;border-radius:50px;font-size:18px;cursor:pointer;transition:0.3s;color:#3b2819;border:1px solid transparent;font-family:'Traditional Arabic',serif}
-        .tab-btn:hover{background:#dccdb5}
-        .tab-btn.active{background:#3b2819;color:#f8f4ec;border-color:#3b2819}
-        .tab-content{display:none;animation:fadeIn 0.5s;padding-top:10px}
-        .tab-content.active{display:block}
-        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-        .reader-controls{display:flex;gap:15px;justify-content:center;flex-wrap:wrap;margin-bottom:25px}
-        select{padding:12px 25px;font-size:20px;border-radius:40px;border:1px solid #b99a6b;background:#fefcf8;width:280px;font-family:inherit}
-        .btn-primary{padding:12px 40px;background:#3b2819;color:white;border:none;border-radius:40px;font-size:20px;cursor:pointer;transition:0.3s;font-family:inherit}
-        .btn-primary:hover{background:#5a3d28}
-        .ayah-card{border-right:6px solid #b99a6b;padding:20px;margin:18px 0;background:#fdfbf7;border-radius:16px}
-        .ayah-text{font-size:32px;line-height:2.4;color:#1a1108;font-family:'Amiri Quran','Traditional Arabic',serif;letter-spacing:1px}
-        .ayah-number{color:#7a5f3e;font-weight:bold;margin-left:15px;font-size:24px;vertical-align:middle}
-        .btn-tafsir{background:transparent;border:1px solid #b99a6b;padding:6px 25px;border-radius:40px;margin-top:12px;cursor:pointer;font-size:17px;color:#3b2819;transition:0.2s;font-family:inherit}
-        .btn-tafsir:hover{background:#b99a6b;color:white}
-        .tafsir-box{background:#f2ebdf;padding:18px;border-radius:14px;margin-top:15px;display:none;font-size:20px;line-height:2;border-right:4px solid #7a5f3e;color:#1f140a}
-        .info-section{background:#f8f4ec;padding:25px;border-radius:20px;margin:20px 0;border-right:6px solid #b99a6b}
-        .info-section h2{color:#3b2819;margin-bottom:20px;font-size:28px;border-bottom:2px solid #dccdb5;padding-bottom:12px;font-weight:normal}
-        .info-section h3{color:#5a3d28;margin:20px 0 10px 0;font-size:24px}
-        .info-section p{margin:15px 0;line-height:2;font-size:19px}
-        .info-section ul,.info-section ol{padding-right:30px;font-size:19px;line-height:2}
-        .info-section li{margin:10px 0}
-        .highlight-box{background:#e8dccc;padding:20px 30px;border-radius:18px;margin:20px 0;border:1px solid #b99a6b}
-        .quran-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:18px}
-        .quran-table th{background:#3b2819;color:white;padding:15px;text-align:right;font-weight:normal}
-        .quran-table td{padding:15px;border-bottom:1px solid #dccdb5;background:white}
-        .quran-table tr:hover td{background:#fdfbf7}
-        .footer{text-align:center;margin-top:40px;color:#6b5a4a;font-size:18px;border-top:1px solid #e0d3c0;padding-top:25px}
-        @media(max-width:600px){.ayah-text{font-size:26px}select{width:100%}.tab-btn{padding:8px 15px;font-size:15px}}
-    </style>
+<!DOCTYPE html><html lang="ar" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المصحف الميسّر - تفسير فوري لكل آية</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:linear-gradient(145deg,#fefaf5 0%,#f5ede4 100%);--card-bg:#ffffff;--text:#1e2a3a;--text-sec:#5a4e3e;--accent:#2c3e4f;--accent-lt:#4a6b7d;--accent-hv:#3a4f5f;--border:#e0d4c4;--hl:#e8dccc;--tf-bg:#f8f2e8;--btn-bg:#2c3e4f;--btn-hv:#3a4f5f;--shadow:rgba(0,0,0,0.08);--shadow-hv:rgba(0,0,0,0.15);--modal-bg:rgba(0,0,0,0.6);--radius:20px;--max-w:700px;--touch:44px}
+[data-theme="dark"]{--bg:linear-gradient(145deg,#1a1f2b 0%,#1e2530 100%);--card-bg:#252b38;--text:#e8e0d8;--text-sec:#b0a898;--accent:#5a8a9a;--accent-lt:#6a9aaa;--accent-hv:#4a7a8a;--border:#353b48;--hl:#2e3a48;--tf-bg:#2a3040;--btn-bg:#5a8a9a;--btn-hv:#4a7a8a;--shadow:rgba(0,0,0,0.3);--shadow-hv:rgba(0,0,0,0.5);--modal-bg:rgba(0,0,0,0.8)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Amiri',serif;background:var(--bg);color:var(--text);padding:15px;direction:rtl;line-height:1.9;font-size:18px;transition:background .3s,color .3s}
+.container{max-width:var(--max-w);margin:auto;background:var(--card-bg);padding:28px;border-radius:var(--radius);box-shadow:0 10px 35px var(--shadow);border:1px solid var(--border);transition:background .3s,box-shadow .3s}
+h1{text-align:center;color:var(--accent);border-bottom:3px solid var(--border);padding-bottom:18px;font-size:32px;font-weight:700;letter-spacing:1px}
+.subhead{text-align:center;color:var(--text-sec);font-size:17px;margin-top:-8px;margin-bottom:20px;border-bottom:1px dashed var(--border);padding-bottom:10px}
+.header-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.header-bar h1{font-size:26px;border:none;padding:0;margin:0}
+.header-actions{display:flex;gap:8px;align-items:center}
+.icon-btn{background:var(--hl);border:1px solid var(--border);border-radius:50%;width:var(--touch);height:var(--touch);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s}
+.icon-btn:hover{background:var(--accent);color:#fff}
+.icon-btn:focus{outline:2px solid var(--accent);outline-offset:2px}
+.tabs{display:flex;justify-content:center;gap:6px;margin:20px 0;flex-wrap:wrap}
+.tab-btn{padding:10px 22px;border:none;background:var(--hl);border-radius:50px;font-size:16px;cursor:pointer;transition:.3s;color:var(--text);border:1px solid transparent;font-family:'Amiri',serif;min-height:var(--touch);touch-action:manipulation}
+.tab-btn:hover{background:var(--border)}
+.tab-btn.active{background:var(--btn-bg);color:#fff;border-color:var(--btn-bg)}
+.tab-btn:focus{outline:2px solid var(--accent);outline-offset:2px}
+.tab-content{display:none;animation:fadeIn .4s;padding-top:8px}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.reader-controls{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
+.surah-wrapper{position:relative;flex:1;max-width:320px;min-width:200px}
+.surah-wrapper select{width:100%;padding:10px 16px;font-size:17px;border-radius:40px;border:1px solid var(--border);background:var(--card-bg);color:var(--text);font-family:'Amiri',serif;min-height:var(--touch);appearance:none;cursor:pointer}
+.surah-wrapper select:focus{outline:2px solid var(--accent);outline-offset:2px}
+.search-input{width:100%;padding:10px 16px;font-size:15px;border:1px solid var(--border);border-radius:12px;background:var(--hl);color:var(--text);font-family:'Amiri',serif;margin-top:8px;display:none;min-height:var(--touch)}
+.search-input:focus{outline:2px solid var(--accent);outline-offset:2px}
+.search-input.visible{display:block}
+.btn-primary{padding:10px 28px;background:var(--btn-bg);color:#fff;border:none;border-radius:40px;font-size:17px;cursor:pointer;transition:.3s;font-family:'Amiri',serif;min-height:var(--touch);touch-action:manipulation}
+.btn-primary:hover{background:var(--btn-hv)}
+.btn-primary:focus{outline:2px solid var(--accent);outline-offset:2px}
+.btn-tafsir{background:transparent;border:1px solid var(--accent);padding:6px 20px;border-radius:40px;margin-top:10px;cursor:pointer;font-size:15px;color:var(--accent);transition:.2s;font-family:'Amiri',serif;min-height:var(--touch);touch-action:manipulation}
+.btn-tafsir:hover{background:var(--accent);color:#fff}
+.btn-tafsir:focus{outline:2px solid var(--accent);outline-offset:2px}
+.btn-sm{padding:6px 16px;font-size:14px;border-radius:30px;min-height:36px}
+.ayah-card{background:var(--card-bg);border-right:4px solid var(--accent);padding:16px;margin:14px 0;border-radius:14px;box-shadow:0 2px 8px var(--shadow);transition:transform .2s,box-shadow .2s;position:relative}
+.ayah-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--shadow-hv)}
+.ayah-text{font-size:24px;line-height:2.2;color:var(--text);font-family:'Amiri',serif;letter-spacing:.5px}
+.ayah-number{color:var(--accent);font-weight:700;margin-left:12px;font-size:20px;vertical-align:middle;cursor:pointer;background:var(--hl);border-radius:50%;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center}
+.ayah-meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px;flex-wrap:wrap;gap:8px}
+.ayah-progress{font-size:13px;color:var(--text-sec)}
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--modal-bg);justify-content:center;align-items:center;z-index:1000;padding:16px;animation:fadeIn .2s}
+.modal-overlay.active{display:flex}
+.modal-box{background:var(--card-bg);max-width:520px;width:100%;max-height:80vh;padding:24px;border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow-y:auto;position:relative;animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.modal-header h3{color:var(--accent);font-size:20px;font-weight:700}
+.modal-close{background:none;border:none;font-size:28px;cursor:pointer;color:var(--text-sec);width:var(--touch);height:var(--touch);display:flex;align-items:center;justify-content:center;border-radius:50%;transition:.2s}
+.modal-close:hover{background:var(--hl);color:var(--text)}
+.modal-tafsir{font-size:19px;line-height:2;color:var(--text)}
+.modal-verse-ref{font-size:14px;color:var(--text-sec);margin-top:12px;padding-top:8px;border-top:1px solid var(--border)}
+.info-section{background:var(--hl);padding:22px;border-radius:18px;margin:18px 0;border-right:4px solid var(--accent)}
+.info-section h2{color:var(--accent);margin-bottom:16px;font-size:26px;border-bottom:2px solid var(--border);padding-bottom:10px;font-weight:700}
+.info-section h3{color:var(--accent-lt);margin:18px 0 8px 0;font-size:22px}
+.info-section p{margin:12px 0;line-height:2;font-size:18px}
+.info-section ul,.info-section ol{padding-right:28px;font-size:18px;line-height:2}
+.info-section li{margin:8px 0}
+.highlight-box{background:var(--hl);padding:16px 24px;border-radius:16px;margin:16px 0;border:1px solid var(--border)}
+.highlight-box p{margin:8px 0;font-size:17px}
+.quran-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:17px}
+.quran-table th{background:var(--btn-bg);color:#fff;padding:12px;text-align:right;font-weight:400}
+.quran-table td{padding:12px;border-bottom:1px solid var(--border);background:var(--card-bg)}
+.quran-table tr:hover td{background:var(--hl)}
+.progress-bar{width:100%;height:6px;background:var(--border);border-radius:3px;margin:10px 0;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .3s}
+.progress-text{font-size:13px;color:var(--text-sec);text-align:center}
+.footer{text-align:center;margin-top:36px;color:var(--text-sec);font-size:16px;border-top:1px solid var(--border);padding-top:20px}
+.spinner{display:inline-block;width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-container{text-align:center;padding:30px}
+.error-box{text-align:center;padding:24px 12px}
+.error-box p{margin:12px 0}
+.bookmark-btn{background:none;border:none;font-size:18px;cursor:pointer;color:var(--text-sec);transition:.2s;min-height:var(--touch);min-width:var(--touch);display:flex;align-items:center;justify-content:center}
+.bookmark-btn:hover{color:#e6a817}
+.bookmark-btn.bookmarked{color:#e6a817}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--accent);color:#fff;padding:12px 24px;border-radius:30px;font-size:15px;z-index:2000;transition:transform .3s ease;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.skip-link{position:absolute;top:-100px;left:0;background:var(--accent);color:#fff;padding:8px 16px;z-index:9999;border-radius:0 0 8px 0}
+.skip-link:focus{top:0}
+@media(max-width:600px){.container{padding:18px}h1{font-size:24px}.ayah-text{font-size:22px}.surah-wrapper{max-width:100%}.tab-btn{padding:8px 14px;font-size:14px}.modal-box{padding:16px;max-height:85vh}.btn-primary{padding:10px 24px;font-size:16px}}
+</style>
 </head>
 <body>
-<div class="container">
-    <h1>📖 المصحف الميسّر</h1>
-    <div class="subhead">بالرسم العثماني | تفسير فوري لكل آية</div>
-
-    <div class="tabs">
-        <button class="tab-btn active" onclick="openTab(event, 'reader')">📖 المصحف</button>
-        <button class="tab-btn" onclick="openTab(event, 'muhkamat')">📜 المحكمات</button>
-        <button class="tab-btn" onclick="openTab(event, 'manhaj')">📚 منهج السلف</button>
-        <button class="tab-btn" onclick="openTab(event, 'ijaz')">🌟 الإعجاز</button>
-    </div>
-
-    <!-- ===== المصحف ===== -->
-    <div id="reader" class="tab-content active">
-        <div class="reader-controls">
-            <select id="surahSelect"></select>
-            <button class="btn-primary" onclick="loadSurah()">عرض السورة</button>
-        </div>
-        <div id="ayahsContainer"></div>
-    </div>
-
-    <!-- ===== المحكمات ===== -->
-    <div id="muhkamat" class="tab-content">
-        <div class="info-section">
-            <h2>📜 المُحْكَمَاتُ هُنَّ أُمُّ الْكِتَابِ</h2>
-            <div class="highlight-box">
-                <p><strong>القاعدة:</strong> ﴿مِنْهُ آيَاتٌ مُحْكَمَاتٌ هُنَّ أُمُّ الْكِتَابِ وَأُخَرُ مُتَشَابِهَاتٌ﴾ (آل عمران 7).</p>
-                <p><strong>المحكم:</strong> ما وضح معناه، ودلالته قطعية لا تحتمل النقاش (كالتوحيد، الصلاة، تحريم الزنا).</p>
-                <p><strong>المتشابه:</strong> ما احتمل معاني، ويُرد إلى المحكم، ولا نتعمق في تأويله.</p>
-            </div>
-            <h3>🔹 أمثلة قطعية</h3>
-            <table class="quran-table">
-                <tr><th>الآية</th><th>الدلالة القطعية</th></tr>
-                <tr><td><strong>﴿قُلْ هُوَ اللَّهُ أَحَدٌ﴾</strong></td><td>توحيد الله ونفي الشرك.</td></tr>
-                <tr><td><strong>﴿وَأَقِيمُوا الصَّلَاةَ﴾</strong></td><td>فرضية الصلاة الخمس.</td></tr>
-                <tr><td><strong>﴿حُرِّمَتْ عَلَيْكُمُ الْمَيْتَةُ﴾</strong></td><td>تحريم الميتة والدم ولحم الخنزير.</td></tr>
-            </table>
-        </div>
-    </div>
-
-    <!-- ===== منهج السلف ===== -->
-    <div id="manhaj" class="tab-content">
-        <div class="info-section">
-            <h2>📚 منهج السلف</h2>
-            <div class="highlight-box"><p><strong>القاعدة:</strong> "فهم القرآن على منهج السلف: قرآن بقرآن، وسنة، وأقوال صحابة، ولغة عربية، وعمل."</p></div>
-            <h3>مراتب التفسير (الذهبي)</h3>
-            <ol>
-                <li><strong>تفسير القرآن بالقرآن</strong> – الأولوية القصوى.</li>
-                <li><strong>تفسير القرآن بالسنة</strong> – الثاني.</li>
-                <li><strong>تفسير القرآن بأقوال الصحابة</strong> – الثالث.</li>
-                <li><strong>تفسير القرآن بأقوال التابعين</strong> – الرابع.</li>
-                <li><strong>الرأي المدروس</strong> – الأخير مع الاحتياط.</li>
-            </ol>
-        </div>
-    </div>
-
-    <!-- ===== الإعجاز والمقاصد ===== -->
-    <div id="ijaz" class="tab-content">
-        <div class="info-section">
-            <h2>🌟 المقاصد والإعجاز</h2>
-            <h3>المقاصد الخمس</h3>
-            <ul><li>حفظ الدين، النفس، العقل، النسل، المال.</li></ul>
-            <h3>الإعجاز</h3>
-            <ul><li><strong>بلاغي:</strong> التحدي بسورة من مثله.</li><li><strong>غيبي:</strong> هزيمة الروم ثم غلبتهم.</li><li><strong>علمي:</strong> تمدد الكون (كإشارة).</li></ul>
-        </div>
-    </div>
-
-    <div class="footer">🤲 نسأل الله النفع والعمل الصالح.</div>
+<a href="#main" class="skip-link">تخطي إلى المحتوى</a>
+<div class="container" id="main" role="main">
+<header class="header-bar">
+<h1>📖 المصحف الميسّر</h1>
+<div class="header-actions">
+<button class="icon-btn" id="themeToggle" title="تبديل الوضع" aria-label="تبديل الوضع الليلي والفاتح">🌓</button>
+<button class="icon-btn" id="bookmarkBtn" title="إشارات المرجعية" aria-label="عرض إشارات المرجعية">🔖</button>
+</div>
+</header>
+<div class="subhead">بالرسم العثماني | تفسير فوري لكل آية</div>
+<div class="tabs" role="tablist">
+<button class="tab-btn active" role="tab" aria-selected="true" onclick="openTab(event,'reader')">📖 المصحف</button>
+<button class="tab-btn" role="tab" onclick="openTab(event,'muhkamat')">📜 المحكمات</button>
+<button class="tab-btn" role="tab" onclick="openTab(event,'manhaj')">📚 منهج السلف</button>
+<button class="tab-btn" role="tab" onclick="openTab(event,'ijaz')">🌟 الإعجاز</button>
+</div>
+<div id="reader" class="tab-content active">
+<div class="reader-controls">
+<div class="surah-wrapper">
+<select id="surahSelect" aria-label="اختر السورة"><option value="1">١. الفاتحة</option></select>
+<input type="text" class="search-input" id="surahSearch" placeholder="ابحث عن سورة..." aria-label="بحث عن سورة">
+</div>
+<button class="btn-primary" onclick="loadSurah()" aria-label="عرض السورة">▶ عرض</button>
+</div>
+<div class="progress-bar" id="progressContainer" style="display:none"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+<div class="progress-text" id="progressText" style="display:none"></div>
+<div id="ayahsContainer"></div>
+</div>
+<div id="muhkamat" class="tab-content">
+<div class="info-section">
+<h2>📜 المُحْكَمَاتُ هُنَّ أُمُّ الْكِتَابِ</h2>
+<div class="highlight-box">
+<p><strong>القاعدة:</strong> ﴿مِنْهُ آيَاتٌ مُحْكَمَاتٌ هُنَّ أُمُّ الْكِتَابِ وَأُخَرُ مُتَشَابِهَاتٌ﴾ (آل عمران 7).</p>
+<p><strong>المحكم:</strong> ما وضح معناه، ودلالته قطعية لا تحتمل النقاش (كالتوحيد، الصلاة، تحريم الزنا).</p>
+<p><strong>المتشابه:</strong> ما احتمل معاني، ويُرد إلى المحكم، ولا نتعمق في تأويله.</p>
+</div>
+<h3>🔹 أمثلة قطعية</h3>
+<table class="quran-table"><tr><th>الآية</th><th>الدلالة القطعية</th></tr>
+<tr><td><strong>﴿قُلْ هُوَ اللَّهُ أَحَدٌ﴾</strong></td><td>توحيد الله ونفي الشرك.</td></tr>
+<tr><td><strong>﴿وَأَقِيمُوا الصَّلَاةَ﴾</strong></td><td>فرضية الصلاة الخمس.</td></tr>
+<tr><td><strong>﴿حُرِّمَتْ عَلَيْكُمُ الْمَيْتَةُ﴾</strong></td><td>تحريم الميتة والدم ولحم الخنزير.</td></tr>
+</table>
+</div>
+</div>
+<div id="manhaj" class="tab-content">
+<div class="info-section">
+<h2>📚 منهج السلف</h2>
+<div class="highlight-box"><p><strong>القاعدة:</strong> "فهم القرآن على منهج السلف: قرآن بقرآن، وسنة، وأقوال صحابة، ولغة عربية، وعمل."</p></div>
+<h3>مراتب التفسير (الذهبي)</h3>
+<ol><li><strong>تفسير القرآن بالقرآن</strong></li><li><strong>تفسير القرآن بالسنة</strong></li><li><strong>تفسير القرآن بأقوال الصحابة</strong></li><li><strong>تفسير القرآن بأقوال التابعين</strong></li><li><strong>الرأي المدروس</strong></li></ol>
+</div>
+</div>
+<div id="ijaz" class="tab-content">
+<div class="info-section">
+<h2>🌟 المقاصد والإعجاز</h2>
+<h3>المقاصد الخمس</h3><ul><li>حفظ الدين، النفس، العقل، النسل، المال.</li></ul>
+<h3>الإعجاز</h3>
+<ul><li><strong>بلاغي:</strong> التحدي بسورة من مثله.</li><li><strong>غيبي:</strong> هزيمة الروم ثم غلبتهم.</li><li><strong>علمي:</strong> تمدد الكون (كإشارة).</li></ul>
+</div>
+</div>
+<div class="footer">🤲 نسأل الله النفع والعمل الصالح.</div>
 </div>
 
+<div id="tafsirModal" class="modal-overlay" role="dialog" aria-modal="true" aria-label="تفسير الآية">
+<div class="modal-box">
+<div class="modal-header"><h3 id="modalTitle">تفسير الآية</h3><button class="modal-close" onclick="closeModal()" aria-label="إغلاق">×</button></div>
+<div class="modal-tafsir" id="modalTafsir"></div>
+<div class="modal-verse-ref" id="modalRef"></div>
+</div>
+</div>
+
+<div id="bookmarksPanel" class="modal-overlay" role="dialog" aria-modal="true" aria-label="إشارات المرجعية">
+<div class="modal-box">
+<div class="modal-header"><h3>🔖 إشارات المرجعية</h3><button class="modal-close" onclick="closeBookmarks()" aria-label="إغلاق">×</button></div>
+<div id="bookmarksList"></div>
+</div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
 <script>
-const tafsirData = {
-    "1:1": "تفسير 'بسم الله...': ابتداء باسم الله الجامع لصفات الكمال. وهو قطعي الدلالة على أن جميع الأعمال تبدأ باسمه.",
-    "1:2": "تفسير 'الحمد لله رب العالمين': الحمد هو الثناء على الله بصفات الكمال، والرب هو المالك المدبر الخالق.",
-    "1:3": "تفسير 'الرحمن الرحيم': صفتان دالتان على عميم رحمته في الدنيا والآخرة.",
-    "1:4": "تفسير 'مالك يوم الدين': إثبات قطعي للبعث والجزاء.",
-    "1:5": "تفسير 'إياك نعبد وإياك نستعين': إخلاص العبادة لله وحده، والاستعانة به وحده.",
-    "1:6": "تفسير 'اهدنا الصراط المستقيم': سؤال الهداية والثبات على طريق الحق.",
-    "1:7": "تفسير 'صراط الذين أنعمت عليهم...': بيان أن سبيل النجاة هو طريق المنعم عليهم، والتحذير من طريق المغضوب عليهم والضالين.",
-    "2:255": "تفسير آية الكرسي : أعظم آية في القرآن. إثبات التوحيد الخالص، والحي القيوم، وسعة الكرسي، والعلي العظيم.",
-    "3:85": "تفسير 'وَمَنْ يَبْتَغِ غَيْرَ الْإِسْلَامِ دِينًا...': الدين المرضي عند الله هو الإسلام، من يتبعه غيره فهو من الخاسرين.",
-    "5:3": "تفسير 'حُرِّمَتْ عَلَيْكُمُ الْمَيْتَةُ...': تحريم الميتة والدم ولحم الخنزير. وفي آخرها إكمال الدين وإتمام النعمة.",
-    "6:162": "تفسير 'قُلْ إِنَّ صَلَاتِي وَنُسُكِي...': توحيد العبادة الخالص لله وحده في الصلاة والنسك والحياة والممات.",
-    "30:2": "تفسير 'غُلِبَتِ الرُّومُ': إعجاز غيبي، حيث أخبر القرآن بهزيمة الروم ثم غلبتهم بعد بضع سنين، وقد تحقق.",
-    "51:47": "تفسير 'وَالسَّمَاءَ بَنَيْنَاهَا بِأَيْدٍ وَإِنَّا لَمُوسِعُونَ': إشارة إلى تمدد الكون، وهي حقيقة أثبتها العلم الحديث."
+const tafsirData={
+"1:1":"تفسير 'بسم الله...': ابتداء باسم الله الجامع لصفات الكمال.",
+"1:2":"تفسير 'الحمد لله رب العالمين': الحمد ثناء على الله بصفات الكمال، والرب هو المالك المدبر الخالق.",
+"1:3":"تفسير 'الرحمن الرحيم': صفتان دالتان على عميم رحمته في الدنيا والآخرة.",
+"1:4":"تفسير 'مالك يوم الدين': إثبات قطعي للبعث والجزاء.",
+"1:5":"تفسير 'إياك نعبد وإياك نستعين': إخلاص العبادة لله وحده، والاستعانة به وحده.",
+"1:6":"تفسير 'اهدنا الصراط المستقيم': سؤال الهداية والثبات على طريق الحق.",
+"1:7":"تفسير 'صراط الذين أنعمت عليهم...': سبيل النجاة طريق المنعم عليهم والتحذير من طريق المغضوب عليهم والضالين.",
+"2:255":"تفسير آية الكرسي: أعظم آية في القرآن. إثبات التوحيد الخالص، والحي القيوم، وسعة الكرسي، والعلي العظيم.",
+"3:85":"تفسير 'وَمَنْ يَبْتَغِّ غَيْرَ الْإِسْلَامِ دِينًا...': الدين المرضي عند الله هو الإسلام.",
+"5:3":"تفسير 'حُرِّمَتْ عَلَيْكُمُ الْمَيْتَةُ...': تحريم الميتة والدم ولحم الخنزير.",
+"6:162":"تفسير 'قُلْ إِنَّ صَلَاتِي وَنُسُكِي...': توحيد العبادة الخالص لله وحده.",
+"30:2":"تفسير 'غُلِبَتِ الرُّومُ': إعجاز غيبي، أخبر القرآن بهزيمة الروم ثم غلبتهم.",
+"51:47":"تفسير 'وَالسَّمَاءَ بَنَيْنَاهَا بِأَيْدٍ...': إشارة إلى تمدد الكون، والتي أثبتها العلم الحديث."
 };
 
-const surahNames = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
+const surahNames=["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
 
-function fetchWithTimeout(url, ms = 8000) {
-    const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), ms);
-    return fetch(url, { signal: controller.signal }).finally(() => clearTimeout(id));
+let darkMode=localStorage.getItem('mos7af_dark')==='true';
+let progress=JSON.parse(localStorage.getItem('mos7af_progress')||'{}');
+let bookmarks=JSON.parse(localStorage.getItem('mos7af_bookmarks')||'[]');
+let cachedTafsir={};
+let currentSurah=1;
+
+function fetchWithTimeout(url,ms=8000){const c=new AbortController();const id=setTimeout(()=>c.abort(),ms);return fetch(url,{signal:c.signal}).finally(()=>clearTimeout(id));}
+
+function showToast(msg,dur=2500){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
+
+function initTheme(){if(darkMode)document.documentElement.setAttribute('data-theme','dark');}
+
+document.getElementById('themeToggle').addEventListener('click',()=>{darkMode=!darkMode;document.documentElement.setAttribute('data-theme',darkMode?'dark':'light');localStorage.setItem('mos7af_dark',String(darkMode));showToast(darkMode?'الوضع الليلي 🌙':'الوضوح الفاتح ☀️');});
+
+function populateSurahSelect(){const sel=document.getElementById('surahSelect');sel.innerHTML='';surahNames.forEach((name,i)=>{const opt=document.createElement('option');opt.value=i+1;opt.textContent=`${i+1}. ${name}`;sel.appendChild(opt)});const hashSurah=parseInt(window.location.hash.replace('#',''),10);const savedSurah=parseInt(localStorage.getItem('mos7af_surah'),10);sel.value=hashSurah||savedSurah||1;}
+
+function saveProgress(s,ay){progress[s]=ay;localStorage.setItem('mos7af_progress',JSON.stringify(progress));}
+
+function updateProgress(sn,ayN,total){const pct=Math.round((ayN/total)*100);document.getElementById('progressFill').style.width=pct+'%';document.getElementById('progressText').textContent=`آية ${ayN} من ${total} (${pct}%)`;document.getElementById('progressContainer').style.display='block';document.getElementById('progressText').style.display='block';saveProgress(sn,ayN);}
+
+function toggleBookmark(surah,ayah){const key=`${surah}:${ayah}`;const idx=bookmarks.indexOf(key);const btn=event.target.closest('.bookmark-btn');if(idx>-1){bookmarks.splice(idx,1);btn.classList.remove('bookmarked');showToast('إزالة من الإشارات المرجعية');}else{bookmarks.push(key);btn.classList.add('bookmarked');showToast('تمت الإشارة المرجعية 🔖');}localStorage.setItem('mos7af_bookmarks',JSON.stringify(bookmarks));}
+
+function renderBookmarks(){const list=document.getElementById('bookmarksList');if(!bookmarks.length){list.innerHTML='<p style="text-align:center;color:var(--text-sec)">لا توجد إشارات مرجعية بعد.</p>';return;}list.innerHTML=bookmarks.map(k=>{const[s,a]=k.split(':');return`<div style="padding:10px;border-bottom:1px solid var(--border);cursor:pointer" onclick="goToAyah(${s},${a});closeBookmarks()">سورة ${s} (${surahNames[s-1]}) — آية ${a} <button onclick="event.stopPropagation();removeBookmark('${k}')" style="float:left;background:none;border:none;cursor:pointer;font-size:16px" aria-label="حذف">✕</button></div>`;}).join('');}
+
+function removeBookmark(key){bookmarks=bookmarks.filter(b=>b!==key);localStorage.setItem('mos7af_bookmarks',JSON.stringify(bookmarks));renderBookmarks();}
+
+function goToAyah(s,a){document.getElementById('surahSelect').value=s;loadSurah();setTimeout(()=>{const cards=document.querySelectorAll('.ayah-card');if(cards[a-1])cards[a-1].scrollIntoView({behavior:'smooth',block:'center'})},1500);}
+
+document.getElementById('bookmarkBtn').addEventListener('click',()=>{renderBookmarks();document.getElementById('bookmarksPanel').classList.add('active');});
+
+function closeBookmarks(){document.getElementById('bookmarksPanel').classList.remove('active');}
+
+async function loadSurah(){const sel=document.getElementById('surahSelect');const sn=parseInt(sel.value);if(!sn)return;localStorage.setItem('mos7af_surah',sn);window.location.hash=sn;currentSurah=sn;const cont=document.getElementById('ayahsContainer');cont.innerHTML='<div class="loading-container"><div class="spinner"></div><p style="margin-top:12px;color:var(--text-sec)">جاري التحميل...</p></div>';
+
+let verses=null;
+try{const resp=await fetchWithTimeout(`https://api.alquran.cloud/v1/surah/${sn}/quran-uthmani`,8000);const data=await resp.json();if(data?.data?.ayahs?.length)verses=data.data.ayahs.map(v=>({n:v.numberInSurah,text:v.text}));}catch(e){}
+
+if(!verses){try{const resp=await fetchWithTimeout(`https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-quranuthmanihaf/${sn}.json`,8000);const data=await resp.json();const list=data?.chapter||data?.verses||data?.quran||[];if(Array.isArray(list)&&list.length)verses=list.map((v,i)=>({n:v.verse??(i+1),text:v.text??v.arabic??''}));}catch(e){}}
+
+if(!verses){cont.innerHTML=`<div class="error-box"><p>⚠️ تعذّر تحميل الآيات.</p><button class="btn-primary" onclick="loadSurah()">🔄 إعادة المحاولة</button></div>`;return;}
+
+let html='';
+verses.forEach((ayah,idx)=>{const key=`${sn}:${ayah.n}`;const isBm=bookmarks.includes(key);html+=`<div class="ayah-card" id="ayah-${ayah.n}"><div class="ayah-text"><span class="ayah-number" onclick="openTafsirModal(${sn},${ayah.n})" title="عرض التفسير" role="button" aria-label="تفسير الآية ${ayah.n}">(${ayah.n})</span>${ayah.text}</div><div class="ayah-meta"><button class="btn-tafsir" onclick="openTafsirModal(${sn},${ayah.n})" aria-label="عرض تفسير الآية ${ayah.n}">📘 التفسير</button><button class="bookmark-btn ${isBm?'bookmarked':''}" onclick="toggleBookmark(${sn},${ayah.n})" aria-label="إشارة مرجعية">${isBm?'🔖':'☆'}</button><button class="btn-tafsir btn-sm" onclick="shareAyah(${sn},${ayah.n})" aria-label="مشاركة الآية">📤 مشاركة</button></div></div>`;});
+cont.innerHTML=html;updateProgress(sn,1,verses.length);
+
+window.removeEventListener('scroll',_scrollHandler);
+const scrollHandler=()=>{const cards=document.querySelectorAll('.ayah-card');let vis=1;cards.forEach(card=>{const r=card.getBoundingClientRect();if(r.top<window.innerHeight/2){const n=parseInt(card.id.replace('ayah-',''));if(n)vis=n;}});updateProgress(sn,vis,verses.length);};
+window.addEventListener('scroll',scrollHandler,{passive:true});
 }
 
-function populateSurahSelect() {
-    const select = document.getElementById('surahSelect');
-    select.innerHTML = '';
-    surahNames.forEach((name, i) => {
-        const option = document.createElement('option');
-        option.value = i + 1;
-        option.textContent = `${i + 1}. ${name}`;
-        select.appendChild(option);
-    });
-    const hashSurah = parseInt(window.location.hash.replace('#', ''), 10);
-    const savedSurah = parseInt(localStorage.getItem('mos7af_surah'), 10);
-    loadSurah(hashSurah || savedSurah || 1);
-}
+function openTafsirModal(surah,ayah){const modal=document.getElementById('tafsirModal');const tafsirDiv=document.getElementById('modalTafsir');const refDiv=document.getElementById('modalRef');const title=document.getElementById('modalTitle');const key=`${surah}:${ayah}`;title.textContent=`سورة ${surahNames[surah-1]} — آية ${ayah}`;tafsirDiv.innerHTML='<div style="text-align:center;padding:20px"><div class="spinner"></div><p style="margin-top:12px;color:var(--text-sec)">جاري جلب التفسير...</p></div>';refDiv.textContent=`الآية ${ayah} من سورة ${surahNames[surah-1]}`;modal.classList.add('active');document.body.style.overflow='hidden';
 
-async function loadSurah(customSurah) {
-    const select = document.getElementById('surahSelect');
-    const surahNumber = customSurah || select.value;
-    if (!surahNumber) return;
-    select.value = surahNumber;
-    localStorage.setItem('mos7af_surah', surahNumber);
-    window.location.hash = surahNumber;
-    const container = document.getElementById('ayahsContainer');
-    container.innerHTML = '⏳ جاري تحميل الآيات...';
+let tafsirText=tafsirData[key];
+if(!tafsirText){if(cachedTafsir[key]){tafsirText=cachedTafsir[key];renderTafsir(tafsirText);return;}
+const sources=[()=>fetchWithTimeout(`https://cdn.jsdelivr.net/gh/spa5k/tafsir_api@main/tafsir/ar-tafsir-muyassar/${surah}/${ayah}.json`,6000),()=>fetchWithTimeout(`https://cdn.jsdelivr.net/gh/spa5k/tafsir_api@main/tafsir/ar-tafsir-ibn-kathir/${surah}/${ayah}.json`,6000),()=>fetchWithTimeout(`https://cdn.jsdelivr.net/gh/spa5k/tafsir_api@main/tafsir/ar-tafseer-al-saddi/${surah}/${ayah}.json`,6000)];
+(async()=>{for(const src of sources){try{const res=await src();if(!res.ok)continue;const d=await res.json();const text=d?.text||d?.tafsir?.text||(d?.tafsir&&String(d.tafsir))||null;if(text&&text.trim().length>3){tafsirText=text;break;}}catch(e){}}renderTafsir(tafsirText);})();}else{renderTafsir(tafsirText);}}
 
-    let verses = null;
+function renderTafsir(text){const tafsirDiv=document.getElementById('modalTafsir');if(text){tafsirDiv.innerHTML=text;cachedTafsir[`${currentSurah}:${lastAyah}`]=text;}else{tafsirDiv.innerHTML='⚠️ لم نتمكن من جلب التفسير. تحقق من اتصالك بالإنترنت.';}}
 
-    try {
-        const response = await fetchWithTimeout(`https://api.alquran.cloud/v1/surah/${surahNumber}/quran-uthmani`, 8000);
-        const data = await response.json();
-        if (data?.data?.ayahs?.length) {
-            verses = data.data.ayahs.map(a => ({ n: a.numberInSurah, text: a.text }));
-        }
-    } catch (error) {}
+let lastAyah=1;
+function closeModal(){document.getElementById('tafsirModal').classList.remove('active');document.body.style.overflow='';}
+document.getElementById('tafsirModal').addEventListener('click',e=>{if(e.target===document.getElementById('tafsirModal'))closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeBookmarks();}});
 
-    if (!verses) {
-        try {
-            const response = await fetchWithTimeout(`https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-quranuthmanihaf/${surahNumber}.json`, 8000);
-            const data = await response.json();
-            const list = data?.chapter || data?.verses || data?.quran || [];
-            if (Array.isArray(list) && list.length) {
-                verses = list.map((v, i) => ({ n: v.verse ?? (i + 1), text: v.text ?? v.arabic1 ?? v.arabic }));
-            }
-        } catch (error) {}
-    }
+function shareAyah(surah,ayah){const url=`${window.location.origin}${window.location.pathname}#${surah}:${ayah}`;const text=`سورة ${surahNames[surah-1]} — آية ${ayah} | المصحف الميسّر`;if(navigator.share){navigator.share({title:text,text:text,url:url}).catch(()=>{});}else{navigator.clipboard.writeText(`${text}\n${url}`).then(()=>showToast('تم نسخ الرابط 📋',2000));}}
 
-    if (!verses) {
-        container.innerHTML = `<div style="text-align:center; padding: 30px 10px;">⚠️ تعذّر الاتصال بخادم الآيات. تحقق من اتصالك بالإنترنت ثم أعد المحاولة.<br><br><button class="btn-primary" onclick="loadSurah(${surahNumber})">🔄 إعادة المحاولة</button></div>`;
-        return;
-    }
+function openTab(evt,tabName){document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-selected','false')});document.getElementById(tabName).classList.add('active');evt.currentTarget.classList.add('active');evt.currentTarget.setAttribute('aria-selected','true');}
 
-    let html = '';
-    verses.forEach(ayah => {
-        html += `
-            <div class="ayah-card">
-                <div class="ayah-text">
-                    <span class="ayah-number">(${ayah.n})</span> ${ayah.text}
-                </div>
-                <button class="btn-tafsir" onclick="toggleTafsir(this, ${surahNumber}, ${ayah.n})">📘 عرض التفسير</button>
-                <div class="tafsir-box">⏳ انقر لعرض التفسير...</div>
-            </div>
-        `;
-    });
-    container.innerHTML = html;
-}
+document.getElementById('surahSelect').addEventListener('change',function(){document.getElementById('surahSearch').classList.remove('visible');loadSurah();});
+document.getElementById('surahSearch').addEventListener('input',function(){const q=this.value.toLowerCase();document.querySelectorAll('#surahSelect option').forEach(opt=>{opt.style.display=opt.textContent.toLowerCase().includes(q)?'':'none';});});
 
-async function toggleTafsir(btn, surah, ayah) {
-    const tafsirDiv = btn.nextElementSibling;
+window.addEventListener('hashchange',()=>{const h=parseInt(window.location.hash.replace('#',''),10);if(h&&h>=1&&h<=114){document.getElementById('surahSelect').value=h;loadSurah();}});
 
-    if (tafsirDiv.style.display === 'block') {
-        tafsirDiv.style.display = 'none';
-        btn.textContent = '📘 عرض التفسير';
-        return;
-    }
-
-    tafsirDiv.style.display = 'block';
-    btn.textContent = '⏳ جاري التحميل...';
-    tafsirDiv.innerHTML = '⏳ جاري جلب التفسير من المصادر الموثوقة...';
-
-    const key = `${surah}:${ayah}`;
-    let tafsirText = tafsirData[key];
-
-    if (!tafsirText) {
-        const slugs = ['ar-tafsir-muyassar', 'ar-tafsir-ibn-kathir', 'ar-tafseer-al-saddi', 'ar-tafsir-al-tabari'];
-        for (const slug of slugs) {
-            try {
-                const res = await fetchWithTimeout(`https://cdn.jsdelivr.net/gh/spa5k/tafsir_api@main/tafsir/${slug}/${surah}/${ayah}.json`, 6000);
-                if (!res.ok) continue;
-                const d = await res.json();
-                const text = (typeof d?.text === 'string' && d.text) || (typeof d?.tafsir?.text === 'string' && d.tafsir.text) || (typeof d?.tafsir === 'string' && d.tafsir) || null;
-                if (text && text.trim().length > 3) {
-                    tafsirText = text;
-                    break;
-                }
-            } catch (_) {}
-        }
-        if (!tafsirText) tafsirText = '⚠️ لم نتمكن من جلب التفسير لهذه الآية حالياً. تحقق من اتصالك بالإنترنت أو حاول مرة أخرى لاحقاً.';
-    }
-
-    tafsirDiv.innerHTML = tafsirText;
-    btn.textContent = '📕 إخفاء التفسير';
-}
-
-function openTab(evt, tabName) {
-    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.getElementById(tabName).classList.add('active');
-    evt.currentTarget.classList.add('active');
-}
-
-document.addEventListener('DOMContentLoaded', populateSurahSelect);
+document.addEventListener('DOMContentLoaded',()=>{initTheme();populateSurahSelect();const hashSurah=parseInt(window.location.hash.replace('#',''),10);const savedSurah=parseInt(localStorage.getItem('mos7af_surah'),10);const target=hashSurah||savedSurah||1;document.getElementById('surahSelect').value=target;setTimeout(()=>loadSurah(),300);});
 </script>
 </body></html>
